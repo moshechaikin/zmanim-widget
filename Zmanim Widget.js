@@ -1,9 +1,6 @@
 // Variables used by Scriptable.
 // These must be at the very top of the file. Do not edit.
 // icon-color: orange; icon-glyph: clock;
-// Variables used by Scriptable.
-// These must be at the very top of the file. Do not edit.
-// icon-color: blue; icon-glyph: magic; 
 // ------------------------------------------------------------------------------
 // Created by Moshe Chaikin (https://github.com/moshechaikin)
 // this scriptable widget uses the Hebcal Zmanim API (https://www.hebcal.com/home/1663/zmanim-halachic-times-api)
