@@ -1,0 +1,12 @@
+{
+  "always_run_in_app" : false,
+  "icon" : {
+    "color" : "orange",
+    "glyph" : "clock"
+  },
+  "name" : "Zmanim Widget",
+  "script" : "\/\/ Variables used by Scriptable.\n\/\/ These must be at the very top of the file. Do not edit.\n\/\/ icon-color: blue; icon-glyph: magic; \n\/\/ ------------------------------------------------------------------------------\n\/\/ Created by Moshe Chaikin (https:\/\/github.com\/moshechaikin)\n\/\/ this scriptable widget uses the Hebcal Zmanim API (https:\/\/www.hebcal.com\/home\/1663\/zmanim-halachic-times-api)\n\/\/ to fetch Zmanim for widget display\n\/\/ using your iPhone's current location\n\/\/ ------------------------------------------------------------------------------\n\/\/ -- SETUP --\n\/\/ *make sure to press the play (run) button & enable location permissions* \n\/\/  (set to while using app)\nconst config = {\n    zmanTitle: \"שקיעה\", \/\/ name this whatever you want\n    zmanType: \"sunset\"\n    \/\/ -- zmanType Options: --\n    \/\/ \"dawn\", \"sofZmanTfilla\", \"chatzotNight\", \"minchaKetana\",\n    \/\/ \"tzeit85deg\", \"tzeit42min\", \"misheyakir\", \"plagHaMincha\", \n    \/\/ \"tzeit50min\", \"alotHaShachar\", \"tzeit72min\",\n    \/\/ \"sofZmanTfillaMGA\", \"sofZmanShma\", \"chatzot\", \"sunset\", \n    \/\/ \"misheyakirMachmir\", \"sofZmanShmaMGA\", \"minchaGedola\",\n    \/\/ \"tzeit7083deg\", \"dusk\", \"sunrise\"\n};\n\nasync function createWidget() {\n    let w = new ListWidget();\n    \n    let secondTitle;\n    try {\n        const currentLocation = await Location.current();\n        const url = `https:\/\/www.hebcal.com\/zmanim?cfg=json&geo=pos&latitude=${currentLocation.latitude}&longitude=${currentLocation.longitude}`;\n        const response = await new Request(url).loadJSON();\n        const zman = new Date(response.times[config.zmanType]);\n        let time = zman.toLocaleTimeString().split(\":\");\n        time = time[0] + ':' + time[1] + time[2].split(\" \")[1].toLowerCase();\n        secondTitle = time;\n    } catch (err) {\n        console.log(err);\n        secondTitle = \"--\";\n    }\n    \n    let firstTitle = w.addText(config.zmanTitle);\n    firstTitle.centerAlignText();\n    let timesNewRoman = new Font(\"Times New Roman\", 22);\n    firstTitle.font = timesNewRoman;\n    \n    secondTitle = w.addText(secondTitle);\n    secondTitle.font = Font.semiboldSystemFont(24);\n    secondTitle.centerAlignText();\n    \n    return w;\n}\n\nlet widget = await createWidget();\nScript.setWidget(widget);",
+  "share_sheet_inputs" : [
+
+  ]
+}
